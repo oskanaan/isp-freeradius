@@ -16,15 +16,16 @@ Follow these steps to get your development environment running:
 
 1. **Clone the Repository**
 
-   git clone [repository-url]
-   cd [repository-name]
+   git clone https://github.com/oskanaan/isp-freeradius.git
+
+   cd isp-freeradius
 
 
 2. **Build Docker Images**
 
    Navigate to the `tbh-freeradius` and `tbh-testcheck` directories to build their respective Docker images.
 
-   cd tbh-freeradius
+   cd docker/tbh-freeradius
 
    docker build -t tbh-freeradius .
 
@@ -34,6 +35,7 @@ Follow these steps to get your development environment running:
 
 
 3. **Using Docker Compose**
+
    Start the services using Docker Compose.
 
    docker-compose up -d
@@ -42,28 +44,28 @@ Follow these steps to get your development environment running:
 
 At the root directory, run the following command:
 
-mvn clean install -T 1C
+    mvn clean install -T 1C
 
 ## Usage
 
-The application is comprised of several services:
+The application is composed of several services:
 
 - **PostgreSQL Database (db)**
-  - `Database Name`: radius
-  - `Username`: radius
-  - `Password`: radius
-  - `Host`: localhost (mapped to port 5432 on your host machine)
-  - `Port`: 5432
+    - `Database Name`: radius
+    - `Username`: radius
+    - `Password`: radius
+    - `Host`: localhost (mapped to port 5432 on your host machine)
+    - `Port`: 5432
 
 - **FreeRADIUS Server (freeradius)**
-  - Accessible via RADIUS client requests on ports 1812 (UDP) and 1813 (UDP).
+    - Accessible via RADIUS client requests on ports 1812 (UDP) and 1813 (UDP).
 
 - **Radiusclient (radiusclient)**
-  - Configured to communicate with the FreeRADIUS server. Modify the `continuous_check.sh` file for specific test scenarios.
+    - Configured to communicate with the FreeRADIUS server. Modify the `continuous_check.sh` file for specific test scenarios.
 
 To stop the services:
-  
-docker-compose down
+
+    docker-compose down
 
 
 ## Cleaning Up

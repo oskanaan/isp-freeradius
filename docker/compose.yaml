@@ -1,0 +1,55 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=radius
+      - POSTGRES_PASSWORD=radius
+      - POSTGRES_DB=radius
+    networks:
+      radius_net:
+        ipv4_address: 172.18.0.2
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+  freeradius:
+    image: tbh-freeradius
+    container_name: freeradius
+    environment:
+      - RADIUS_DB_DRIVER=rlm_sql_postgresql
+      - RADIUS_DB_HOST=172.18.0.2
+      - RADIUS_DB_PORT=5432
+      - RADIUS_DB_NAME=db
+      - RADIUS_DB_USER=radius
+      - RADIUS_DB_PASS=radius
+    networks:
+      radius_net:
+        ipv4_address: 172.18.0.3
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+    command: ["./wait-for-postgres.sh", "freeradius -X -d /etc/freeradius/"]
+    depends_on:
+      - db
+    volumes:
+      - ./tbh-freeradius/clients.conf:/etc/freeradius/clients.conf
+
+  radiusclient:
+    image: tbh-testcheck
+    environment:
+      - RADIUS_HOST=172.18.0.3
+    networks:
+      - radius_net
+    depends_on:
+      - freeradius
+
+networks:
+  radius_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24

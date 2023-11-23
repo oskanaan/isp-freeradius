@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:h2:~/Test;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
+
+  sql.init.mode: never
+
+  messages:
+    basename: messages
+
+  jpa:
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+
+app:
+  jwtSecret: ISP_secret=Key
+  jwtExpirationInMs: 604800000
+  corsOrigin: http://localhost:8080
+  invoice:
+    start-date: '2023-01-01T00:00:00'

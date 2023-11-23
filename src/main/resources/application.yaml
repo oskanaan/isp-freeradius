@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/radius
+    username: radius
+    password: radius
+    driver-class-name: org.postgresql.Driver
+
+  sql.init.mode: always
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  messages:
+    basename: messages
+
+server:
+  port: 8100
+  servlet:
+    context-path: /api
+
+app:
+  jwtSecret: ISP_secret=Key
+  jwtExpirationInMs: 604800000
+  corsOrigin: http://localhost:8088
+  invoice:
+    start-date: '2023-01-01T00:00:00'

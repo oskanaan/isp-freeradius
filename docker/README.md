@@ -78,7 +78,3 @@ docker image prune -a
 # Remove all unused volumes
 docker volume prune
 ```
-
-Use these cleanup commands carefully, as they will remove unused resources.
-
-```
